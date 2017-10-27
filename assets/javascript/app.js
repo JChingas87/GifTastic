@@ -1,20 +1,77 @@
-// Here we grab the text from the input box
+var animals_Array = ["mongoose", "dog", "snake", "cat", "eagle", "wolf", "bear"];
 
+function animalButtons() {
 
-$("#add-animal").on("click", function() {
-    // event.preventDefault();
-    var animal = $("#animal-input").val().attr("data-animal");
+    $(".animal-gifs").empty();
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-        animal + "&api_key=A9UdrmvtGbAIwkb5pOXk3mquhXg3yO8y&limit=10";
-    $.ajax({
-            url: queryURL,
-            method: "GET",
-        })
-        .done(function(response) {
-            console.log(response);
-        });
-});
+    for (var i = 0; i < animals_Array.length; i++) {
+        var a = $("<button>");
+
+        a.addClass("animal");
+
+        a.attr("data-name", animals_Array[i]);
+
+        a.text(animals_Array[i]);
+
+        $(".animal-gifs").prepend(a);
+    }
+
+}
+
+function getTheGifs() {
+
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif_animals + "&api_key=A9UdrmvtGbAIwkb5pOXk3mquhXg3yO8y&limit=10";
+    var gif_animals = $(this).attr("data-name");
+    $(".animal").on("click", function() {
+        $.ajax({
+                url: queryURL,
+                method: "GET",
+            })
+            .done(function(object) {
+                var animal_gifs = object.data;
+                console.log(animal_gifs);
+
+                animal_gifs.forEach(function(gif) {
+                    if (gif.rating !== "r" && gif.rating !== "pg-13") {
+
+                        var gif_div = $("<div class='item'>");
+                        var rating = gif.rating;
+                        var p = $("<p>").text("Rating: " + rating);
+                        var animal_Image = $("<img>");
+
+                        animal_Image.attr("src", gif.images.fixed_height.url);
+                        gif_div.prepend(p);
+                        gif_div.prepend(animal_Image);
+
+                        $(".animal-gifs").append(gif_div);
+                    }
+                });
+            })
+    });
+};
+
+$(document).ready(function() {
+    $("#animal-form").hide();
+    $("#get-started").click(function() {
+        getTheGifs();
+        animalButtons();
+        $("#get-started").hide();
+        $("#animal-form").show();
+    })
+
+    $("#add-animal").on("click", function(event) {
+
+        event.preventDefault();
+
+        var animal = $("#animal-input").val().trim();
+
+        animals_Array.push(animal);
+
+        animalButtons();
+    });
+})
+
+// });
 
 // Need an array of animals
 
@@ -58,4 +115,4 @@ $("#add-animal").on("click", function() {
 // }
 
 // take form input and add to array 
-// make a function that calls the new input from the array into a button that displays the gifs
+// make a function that calls the new input from the array into a button that displays the gifs)
