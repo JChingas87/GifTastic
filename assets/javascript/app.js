@@ -1,28 +1,32 @@
 var animals_Array = ["mongoose", "dog", "snake", "cat", "eagle", "wolf", "bear"];
 
 function animalButtons() {
-
-    $(".animal-gifs").empty();
-
+    $("#animal-catagories").empty();
     for (var i = 0; i < animals_Array.length; i++) {
-        var a = $("<button>");
-
-        a.addClass("animal");
-
-        a.attr("data-name", animals_Array[i]);
-
-        a.text(animals_Array[i]);
-
-        $(".animal-gifs").prepend(a);
+        var button = $("<button>");
+        button.addClass("btn btn-info");
+        button.attr("data-name", animals_Array[i]);
+        button.text(animals_Array[i]);
+        $("#animal-catagories").append(button);
     }
-
 }
+$(document).ready(function() {
+    $("#add-animal").on("click", function(event) {
+        event.preventDefault();
+        var animal = $("#animal-input").val().trim();
+        if (animal == "") {
+            return false;
+        }
+        // $("animal-input").val("");
+        animals_Array.push(animal);
+        animalButtons();
+    });
+    animalButtons();
 
-function getTheGifs() {
+    $("#animal-catagories").on("click", "button", function() {
+        var gif_animals = $(this).attr("data-name");
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif_animals + "&api_key=A9UdrmvtGbAIwkb5pOXk3mquhXg3yO8y&limit=10";
 
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + gif_animals + "&api_key=A9UdrmvtGbAIwkb5pOXk3mquhXg3yO8y&limit=10";
-    var gif_animals = $(this).attr("data-name");
-    $(".animal").on("click", function() {
         $.ajax({
                 url: queryURL,
                 method: "GET",
@@ -30,7 +34,7 @@ function getTheGifs() {
             .done(function(object) {
                 var animal_gifs = object.data;
                 console.log(animal_gifs);
-
+                $("#animal-gifs").empty();
                 animal_gifs.forEach(function(gif) {
                     if (gif.rating !== "r" && gif.rating !== "pg-13") {
 
@@ -40,36 +44,42 @@ function getTheGifs() {
                         var animal_Image = $("<img>");
 
                         animal_Image.attr("src", gif.images.fixed_height.url);
+                        animal_Image.attr("src", gif.images.fixed_height_still.url);
+                        animal_Image.attr("data-animate", gif.images.fixed_height.url);
+                        animal_Image.attr("still", gif.images.fixed_height_still.url);
+                        animal_Image.attr("data-state", "still");
+                        animal_Image.addClass("image");
                         gif_div.prepend(p);
                         gif_div.prepend(animal_Image);
 
-                        $(".animal-gifs").append(gif_div);
+                        $("#animal-gifs").append(gif_div);
+                    }
+                });
+                // $("#animal-gifs").on("click", ".image", function() {
+                $(".image").on("click", function() {
+                    var faced = $(this).attr('data-state');
+                    if (faced == 'still') {
+                        $(this).attr('src', $(this).data('animate'));
+                        $(this).attr('data-state', 'animate');
+                    } else {
+                        $(this).attr('src', $(this).attr('still'));
+                        $(this).attr('data-state', 'still');
                     }
                 });
             })
     });
-};
+});
 
-$(document).ready(function() {
-    $("#animal-form").hide();
-    $("#get-started").click(function() {
-        getTheGifs();
-        animalButtons();
-        $("#get-started").hide();
-        $("#animal-form").show();
-    })
+// $(document).ready(function() {
+//     $("#animal-form").hide();
+//     $("#get-started").click(function() {
+//         getTheGifs();
+//         animalButtons();
+//         $("#get-started").hide();
+//         $("#animal-form").show();
+//     })
 
-    $("#add-animal").on("click", function(event) {
-
-        event.preventDefault();
-
-        var animal = $("#animal-input").val().trim();
-
-        animals_Array.push(animal);
-
-        animalButtons();
-    });
-})
+// })
 
 // });
 

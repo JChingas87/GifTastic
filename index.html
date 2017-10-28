@@ -12,6 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/javascript/app.js"></script>
 </head>
@@ -19,24 +20,41 @@
 <body>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-3">GIFTASTIC</h1>
+            <h1 class="display-3">Animal Gifs!</h1>
+            <p class "details">click the animal buttons to see gifs!</p>
         </div>
     </div>
     <div id="container">
-        <div="form-submission">
-            <form id="animal-form">
-                <label for="animal-input"></label>
-                <input type="text" id="animal-input">
-                <br>
-                <input id="add-animal" type="submit" value="Add an Animal">
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="panel panel-default">
+                    <div class="panel-body" id=form-panel>
+                        <form id="animal-form">
+                            <label for="animal-input"></label>
+                            <p class "details">Type a new animal name and hit submit to see more gifs.</p>
+                            <input type="text" id="animal-input"><input id="add-animal" type="submit" class="btn btn-info" value="Add Animal">
+                        </form>
 
-            </form>
-    </div>
-    <div class="temp-button">
-        <button data="animal" id="get-started" class="btn btn-primary">Get Started!</button>
-    </div>
-    <div class="animal-gifs">
-    </div>
+                        <form id="animal-form">
+                            <button id="reset" type="submit" class="btn btn-primary" value="Reset">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div id="animal-catagories">
+                </div>
+                <div id="animal-gifs">
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+
+        </div>
     </div>
 
 </body>
